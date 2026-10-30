@@ -1,0 +1,1555 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PERMAINAN PERKALIAN - Petualangan Doraemon</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Fredoka & Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dora: {
+                            blue: '#00A0E9',
+                            darkblue: '#0072B5',
+                            lightblue: '#E0F4FF',
+                            red: '#E60012',
+                            yellow: '#FFD100',
+                            card: '#1E293B',
+                            bg: '#0F172A'
+                        }
+                    },
+                    fontFamily: {
+                        fredoka: ['Fredoka', 'sans-serif'],
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0F172A;
+            color: #F8FAFC;
+            overflow-x: hidden;
+        }
+        .font-game {
+            font-family: 'Fredoka', cursive;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0F172A;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #00A0E9;
+            border-radius: 4px;
+        }
+        /* Float Animation for Bamboo Copter */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(4deg); }
+        }
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+        /* Doraemon Clouds Background Effect */
+        .dora-bg {
+            background-image: 
+                radial-gradient(2px 2px at 30px 30px, #00A0E9, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 70px 80px, #FFD100, rgba(0,0,0,0)),
+                radial-gradient(1.5px 1.5px at 120px 40px, #E60012, rgba(0,0,0,0));
+            background-repeat: repeat;
+            background-size: 200px 200px;
+        }
+    </style>
+</head>
+<body class="dora-bg min-h-screen flex flex-col justify-between selection:bg-dora-yellow selection:text-slate-900">
+
+    <!-- NAVIGATION HEADER -->
+    <header class="bg-slate-900/90 backdrop-blur-md border-b border-dora-blue/40 sticky top-0 z-50 px-4 py-3">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-3 cursor-pointer" onclick="switchView('home')">
+                <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-dora-blue to-cyan-400 flex items-center justify-center shadow-lg shadow-dora-blue/40 border border-white/20">
+                    <i class="fa-solid fa-[#00A0E9] fa-bell text-dora-yellow text-xl animate-bounce"></i>
+                </div>
+                <div>
+                    <h1 class="font-game text-xl sm:text-2xl font-bold bg-gradient-to-r from-dora-yellow via-white to-dora-blue bg-clip-text text-transparent">
+                        PERMAINAN PERKALIAN
+                    </h1>
+                    <p class="text-[10px] sm:text-xs text-sky-300 -mt-1"><i class="fa-solid fa-fan text-dora-yellow mr-1"></i>Petualangan Baling-Baling Bambu</p>
+                </div>
+            </div>
+
+            <!-- Current Profile / Login Indicator -->
+            <div class="flex items-center gap-3">
+                <div id="userProfileBadge" class="hidden sm:flex items-center gap-2 bg-slate-800 border border-dora-blue/50 px-3 py-1.5 rounded-full">
+                    <i class="fa-solid fa-user-ninja text-dora-yellow"></i>
+                    <span id="currentStudentNameDisplay" class="text-xs font-semibold text-sky-100">Siswa</span>
+                </div>
+                
+                <button onclick="switchView('teacher-login')" class="bg-dora-red/80 hover:bg-dora-red border border-red-400 text-white text-xs sm:text-sm font-semibold px-3.5 py-2 rounded-xl transition flex items-center gap-2 shadow-md">
+                    <i class="fa-solid fa-user-shield text-dora-yellow"></i>
+                    <span>Area Guru</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <main class="max-w-5xl mx-auto px-4 py-6 flex-grow w-full">
+
+        <!-- ============================================================ -->
+        <!-- VIEW 1: HALAMAN UTAMA SISWA (PETUALANGAN DORAEMON) -->
+        <!-- ============================================================ -->
+        <section id="view-home" class="space-y-8">
+            <!-- Banner Misi Utama Doraemon -->
+            <div class="bg-gradient-to-r from-slate-900 via-sky-950 to-slate-900 rounded-3xl p-6 sm:p-8 border-2 border-dora-blue/50 shadow-2xl relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="space-y-4 max-w-lg z-10 text-center md:text-left">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-dora-blue/20 border border-dora-blue/50 text-sky-300 text-xs font-semibold">
+                        <i class="fa-solid fa-cookie-bite text-amber-400"></i> Petualangan Kantong Ajaib
+                    </div>
+                    <h2 class="font-game text-3xl sm:text-4xl text-white leading-snug">
+                        Kuasai Perkalian, Kumpulkan <span class="text-dora-yellow">8 Alat Canggih Doraemon!</span>
+                    </h2>
+                    <p class="text-sky-200 text-xs sm:text-sm leading-relaxed">
+                        Pilih siswa, berlatih di 4 Game Seru, atau lakukan Setoran Resmi dengan Token dari guru untuk membuka checkpoint alat canggih!
+                    </p>
+                    
+                    <!-- Select Student Profile -->
+                    <div class="bg-slate-900/90 p-3 rounded-2xl border border-dora-blue/60 flex items-center justify-between gap-3">
+                        <div class="text-xs text-sky-300 font-semibold pl-2">Identitas Siswa:</div>
+                        <select id="studentSelectHeader" onchange="changeCurrentStudent(this.value)" class="bg-dora-blue border border-sky-300 text-white text-xs sm:text-sm font-bold rounded-xl px-3 py-2 focus:outline-none cursor-pointer">
+                            <!-- Dynamic Options -->
+                        </select>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex flex-col sm:flex-row gap-3 pt-2">
+                        <button onclick="startPracticeMode()" class="w-full sm:w-auto bg-gradient-to-r from-dora-blue to-cyan-500 hover:from-cyan-400 hover:to-dora-blue text-slate-950 font-game font-bold text-base px-6 py-3.5 rounded-2xl shadow-lg shadow-dora-blue/30 hover:scale-105 transition flex items-center justify-center gap-2 border border-white/30">
+                            <i class="fa-solid fa-gamepad text-lg"></i>
+                            <span>MULAI LATIHAN MANDIRI</span>
+                        </button>
+
+                        <button onclick="openOfficialSessionModal()" class="w-full sm:w-auto bg-gradient-to-r from-dora-red to-rose-600 hover:from-rose-500 hover:to-dora-red text-white font-game font-bold text-base px-6 py-3.5 rounded-2xl shadow-lg shadow-dora-red/30 hover:scale-105 transition flex items-center justify-center gap-2 border border-white/20">
+                            <i class="fa-solid fa-key text-dora-yellow text-lg"></i>
+                            <span>SETORAN RESMI</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Visual Element Doraemon & Bamboo Copter -->
+                <div class="relative w-48 h-48 sm:w-64 sm:h-64 flex items-center justify-center">
+                    <div class="absolute inset-0 bg-dora-blue/20 rounded-full blur-2xl"></div>
+                    <div class="animate-float text-center">
+                        <div class="w-32 h-32 sm:w-40 sm:h-40 rounded-full bg-dora-blue border-4 border-white flex flex-col items-center justify-center mx-auto shadow-2xl relative">
+                            <!-- Doraemon Bell -->
+                            <div class="w-8 h-8 rounded-full bg-dora-yellow border-2 border-slate-900 flex items-center justify-center mb-1">
+                                <div class="w-2 h-2 rounded-full bg-slate-900"></div>
+                            </div>
+                            <i class="fa-solid fa-face-smile text-white text-5xl"></i>
+                            <!-- Collar -->
+                            <div class="w-full h-3 bg-dora-red absolute bottom-4 border-t border-b border-slate-900"></div>
+                        </div>
+                        <div class="mt-3 text-[10px] font-mono text-dora-yellow uppercase tracking-widest bg-slate-900/90 px-3 py-1 rounded-full border border-dora-blue/60">
+                            <i class="fa-solid fa-fan text-dora-yellow mr-1"></i> Baling-Baling Bambu Aktif
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Checkpoints Outer Space / Doraemon Gadgets Map -->
+            <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="font-game text-xl text-dora-yellow flex items-center gap-2">
+                            <i class="fa-solid fa-box-archive"></i> PETA CHECKPOINT ALAT DORAEMON (×2 s/d ×9)
+                        </h3>
+                        <p class="text-xs text-sky-300">Checkpoint hanya terbuka jika kamu LULUS Setoran Resmi dari guru!</p>
+                    </div>
+                    <div id="checkpointsProgressBadge" class="bg-slate-900 border border-dora-blue text-dora-yellow text-xs font-bold px-3 py-1.5 rounded-full">
+                        0 / 8 Alat
+                    </div>
+                </div>
+
+                <!-- Grid Checkpoints (x2 - x9) -->
+                <div id="checkpointsGrid" class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                    <!-- Dynamic rendering by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- VIEW 2: MODE LATIHAN MANDIRI (4 SUB-GAME SELECTION & ARENA) -->
+        <!-- ============================================================ -->
+        <section id="view-practice" class="hidden space-y-6">
+            <!-- Header -->
+            <div class="flex items-center justify-between bg-slate-900 p-4 rounded-2xl border border-dora-blue/50">
+                <button onclick="switchView('home')" class="bg-slate-800 hover:bg-slate-700 text-sky-200 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2">
+                    <i class="fa-solid fa-arrow-left"></i> Kembali ke Menu
+                </button>
+                <h2 class="font-game text-xl text-dora-yellow flex items-center gap-2">
+                    <i class="fa-solid fa-gamepad"></i> ARENA GAME LATIHAN MANDIRI
+                </h2>
+                <div></div>
+            </div>
+
+            <!-- Sub-Menu Selector Game & Tabel -->
+            <div id="practiceTableSelector" class="space-y-6">
+                <!-- Select Sub Game Menu -->
+                <div class="bg-slate-900 p-6 rounded-3xl border border-dora-blue/50 space-y-4">
+                    <h3 class="font-game text-xl text-center text-dora-yellow">1. PILIH JENIS PERMAINAN</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
+                        <!-- Game 1: Klasik Ketik -->
+                        <div onclick="selectPracticeGameMode('classic')" id="gameModeCard-classic" class="cursor-pointer bg-slate-950 border-2 border-dora-blue hover:border-dora-yellow p-4 rounded-2xl text-center transition group">
+                            <div class="w-12 h-12 rounded-xl bg-dora-blue/20 text-dora-blue flex items-center justify-center mx-auto text-2xl mb-2 group-hover:scale-110 transition">
+                                <i class="fa-solid fa-keyboard"></i>
+                            </div>
+                            <h4 class="font-game text-sm text-white">Latihan Klasik</h4>
+                            <p class="text-[10px] text-sky-300 mt-1">Ketik jawaban perkalian menggunakan tombol keypad.</p>
+                        </div>
+
+                        <!-- Game 2: Pilihan Ganda -->
+                        <div onclick="selectPracticeGameMode('quiz')" id="gameModeCard-quiz" class="cursor-pointer bg-slate-950 border-2 border-slate-800 hover:border-dora-blue p-4 rounded-2xl text-center transition group">
+                            <div class="w-12 h-12 rounded-xl bg-purple-500/20 text-purple-300 flex items-center justify-center mx-auto text-2xl mb-2 group-hover:scale-110 transition">
+                                <i class="fa-solid fa-cookie-bite"></i>
+                            </div>
+                            <h4 class="font-game text-sm text-white">Tembak Dorayaki (PG)</h4>
+                            <p class="text-[10px] text-sky-300 mt-1">Pilih 1 dari 4 dorayaki jawaban yang tepat.</p>
+                        </div>
+
+                        <!-- Game 3: Kartu Memori -->
+                        <div onclick="selectPracticeGameMode('memory')" id="gameModeCard-memory" class="cursor-pointer bg-slate-950 border-2 border-slate-800 hover:border-dora-blue p-4 rounded-2xl text-center transition group">
+                            <div class="w-12 h-12 rounded-xl bg-pink-500/20 text-pink-300 flex items-center justify-center mx-auto text-2xl mb-2 group-hover:scale-110 transition">
+                                <i class="fa-solid fa-clone"></i>
+                            </div>
+                            <h4 class="font-game text-sm text-white">Kartu Memori</h4>
+                            <p class="text-[10px] text-sky-300 mt-1">Jodohkan kartu soal dengan hasil perkaliannya.</p>
+                        </div>
+
+                        <!-- Game 4: Benar atau Salah -->
+                        <div onclick="selectPracticeGameMode('truefalse')" id="gameModeCard-truefalse" class="cursor-pointer bg-slate-950 border-2 border-slate-800 hover:border-dora-blue p-4 rounded-2xl text-center transition group">
+                            <div class="w-12 h-12 rounded-xl bg-amber-500/20 text-amber-300 flex items-center justify-center mx-auto text-2xl mb-2 group-hover:scale-110 transition">
+                                <i class="fa-solid fa-circle-half-stroke"></i>
+                            </div>
+                            <h4 class="font-game text-sm text-white">Baling-Baling Benar/Salah</h4>
+                            <p class="text-[10px] text-sky-300 mt-1">Tentukan dengan cepat apakah persamaan benar/salah.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Select Table Perkalian -->
+                <div class="bg-slate-900 p-6 rounded-3xl border border-dora-blue/50 text-center space-y-4">
+                    <h3 class="font-game text-xl text-white">2. PILIH TABEL PERKALIAN</h3>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-2xl mx-auto">
+                        <button onclick="startPracticeSession(2)" class="bg-slate-950 hover:bg-dora-blue border border-dora-blue/60 text-white p-3 rounded-2xl font-game text-lg transition">Perkalian 2</button>
+                        <button onclick="startPracticeSession(3)" class="bg-slate-950 hover:bg-dora-blue border border-dora-blue/60 text-white p-3 rounded-2xl font-game text-lg transition">Perkalian 3</button>
+                        <button onclick="startPracticeSession(4)" class="bg-slate-950 hover:bg-dora-blue border border-dora-blue/60 text-white p-3 rounded-2xl font-game text-lg transition">Perkalian 4</button>
+                        <button onclick="startPracticeSession(5)" class="bg-slate-950 hover:bg-dora-blue border border-dora-blue/60 text-white p-3 rounded-2xl font-game text-lg transition">Perkalian 5</button>
+                        <button onclick="startPracticeSession(6)" class="bg-slate-950 hover:bg-dora-blue border border-dora-blue/60 text-white p-3 rounded-2xl font-game text-lg transition">Perkalian 6</button>
+                        <button onclick="startPracticeSession(7)" class="bg-slate-950 hover:bg-dora-blue border border-dora-blue/60 text-white p-3 rounded-2xl font-game text-lg transition">Perkalian 7</button>
+                        <button onclick="startPracticeSession(8)" class="bg-slate-950 hover:bg-dora-blue border border-dora-blue/60 text-white p-3 rounded-2xl font-game text-lg transition">Perkalian 8</button>
+                        <button onclick="startPracticeSession(9)" class="bg-slate-950 hover:bg-dora-blue border border-dora-blue/60 text-white p-3 rounded-2xl font-game text-lg transition">Perkalian 9</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive Playing Container -->
+            <div id="practiceInteractiveArea" class="hidden bg-slate-900 p-6 sm:p-8 rounded-3xl border-2 border-dora-blue max-w-xl mx-auto space-y-6 shadow-2xl relative">
+                <!-- Score & Game Header -->
+                <div class="flex justify-between items-center text-xs font-semibold text-sky-200 border-b border-slate-800 pb-3">
+                    <div>
+                        Game: <span id="practiceGameTitleDisplay" class="text-dora-yellow font-bold">Klasik</span> 
+                        (<span id="practiceTargetTitle" class="text-dora-blue font-bold">x2</span>)
+                    </div>
+                    <div>Skor: <span id="practiceScoreCounter" class="text-dora-yellow font-bold text-lg">0</span></div>
+                </div>
+
+                <!-- SUB-GAME 1: KLASIK KETIK -->
+                <div id="subGameClassic" class="hidden space-y-4 text-center">
+                    <div class="py-2">
+                        <div class="text-xs uppercase tracking-wider text-sky-300 mb-2">Berapakah Hasil Dari:</div>
+                        <div id="practiceQuestionText" class="font-game text-5xl sm:text-6xl text-white tracking-widest bg-slate-950 py-5 rounded-2xl border-2 border-dora-blue shadow-inner">
+                            2 × 4 = ?
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="flex gap-2 max-w-xs mx-auto">
+                            <input type="number" id="practiceAnswerInput" placeholder="Jawaban..." readonly class="w-full bg-slate-950 border-2 border-dora-blue rounded-xl px-4 py-3 text-center text-3xl font-game text-white focus:outline-none">
+                            <button onclick="submitPracticeAnswer()" class="bg-dora-blue hover:bg-cyan-400 text-slate-950 font-game font-bold text-xl px-6 py-3 rounded-xl transition">Kirim</button>
+                        </div>
+                        <div class="grid grid-cols-3 gap-2 max-w-xs mx-auto pt-2">
+                            <button onclick="appendNum('practiceAnswerInput', '1')" class="bg-slate-950 hover:bg-slate-800 text-white font-game text-2xl py-3 rounded-xl border border-slate-700">1</button>
+                            <button onclick="appendNum('practiceAnswerInput', '2')" class="bg-slate-950 hover:bg-slate-800 text-white font-game text-2xl py-3 rounded-xl border border-slate-700">2</button>
+                            <button onclick="appendNum('practiceAnswerInput', '3')" class="bg-slate-950 hover:bg-slate-800 text-white font-game text-2xl py-3 rounded-xl border border-slate-700">3</button>
+                            <button onclick="appendNum('practiceAnswerInput', '4')" class="bg-slate-950 hover:bg-slate-800 text-white font-game text-2xl py-3 rounded-xl border border-slate-700">4</button>
+                            <button onclick="appendNum('practiceAnswerInput', '5')" class="bg-slate-950 hover:bg-slate-800 text-white font-game text-2xl py-3 rounded-xl border border-slate-700">5</button>
+                            <button onclick="appendNum('practiceAnswerInput', '6')" class="bg-slate-950 hover:bg-slate-800 text-white font-game text-2xl py-3 rounded-xl border border-slate-700">6</button>
+                            <button onclick="appendNum('practiceAnswerInput', '7')" class="bg-slate-950 hover:bg-slate-800 text-white font-game text-2xl py-3 rounded-xl border border-slate-700">7</button>
+                            <button onclick="appendNum('practiceAnswerInput', '8')" class="bg-slate-950 hover:bg-slate-800 text-white font-game text-2xl py-3 rounded-xl border border-slate-700">8</button>
+                            <button onclick="appendNum('practiceAnswerInput', '9')" class="bg-slate-950 hover:bg-slate-800 text-white font-game text-2xl py-3 rounded-xl border border-slate-700">9</button>
+                            <button onclick="clearNum('practiceAnswerInput')" class="bg-dora-red hover:bg-rose-600 text-white font-bold py-3 rounded-xl border border-red-400">C</button>
+                            <button onclick="appendNum('practiceAnswerInput', '0')" class="bg-slate-950 hover:bg-slate-800 text-white font-game text-2xl py-3 rounded-xl border border-slate-700">0</button>
+                            <button onclick="submitPracticeAnswer()" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold py-3 rounded-xl border border-emerald-400"><i class="fa-solid fa-check"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUB-GAME 2: QUIZ PILIHAN GANDA -->
+                <div id="subGameQuiz" class="hidden space-y-6 text-center">
+                    <div class="py-2">
+                        <div class="text-xs uppercase tracking-wider text-amber-300 mb-2">Pilih Dorayaki Jawaban Yang Benar:</div>
+                        <div id="quizQuestionText" class="font-game text-5xl sm:text-6xl text-white tracking-widest bg-slate-950 py-5 rounded-2xl border-2 border-dora-yellow shadow-inner">
+                            3 × 5 = ?
+                        </div>
+                    </div>
+
+                    <div id="quizOptionsGrid" class="grid grid-cols-2 gap-3 max-w-sm mx-auto">
+                        <!-- Dynamic Options rendered by JS -->
+                    </div>
+                </div>
+
+                <!-- SUB-GAME 3: KARTU MEMORI -->
+                <div id="subGameMemory" class="hidden space-y-4 text-center">
+                    <div class="text-xs text-sky-300">Temukan & Jodohkan Pasangan Kartu Soal dan Jawabannya!</div>
+                    <div id="memoryCardsGrid" class="grid grid-cols-3 sm:grid-cols-4 gap-2 max-w-md mx-auto">
+                        <!-- Dynamic Memory Cards -->
+                    </div>
+                </div>
+
+                <!-- SUB-GAME 4: BENAR / SALAH -->
+                <div id="subGameTrueFalse" class="hidden space-y-6 text-center">
+                    <div class="py-2">
+                        <div class="text-xs uppercase tracking-wider text-amber-300 mb-2">Apakah Pernyataan Ini Benar?</div>
+                        <div id="tfQuestionText" class="font-game text-4xl sm:text-5xl text-white tracking-widest bg-slate-950 py-6 rounded-2xl border-2 border-dora-yellow shadow-inner">
+                            2 × 8 = 16
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4 max-w-xs mx-auto">
+                        <button onclick="submitTFAnswer(true)" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-game text-2xl font-bold py-4 rounded-2xl shadow-lg border-2 border-white transition flex flex-col items-center gap-1">
+                            <i class="fa-solid fa-circle-check text-3xl"></i>
+                            BENAR
+                        </button>
+                        <button onclick="submitTFAnswer(false)" class="bg-dora-red hover:bg-rose-500 text-white font-game text-2xl font-bold py-4 rounded-2xl shadow-lg border-2 border-white transition flex flex-col items-center gap-1">
+                            <i class="fa-solid fa-circle-xmark text-3xl"></i>
+                            SALAH
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Immediate Feedback Message -->
+                <div id="practiceFeedback" class="hidden p-3 rounded-xl font-bold text-center text-sm"></div>
+
+                <!-- Back to Practice Selection -->
+                <button onclick="startPracticeMode()" class="w-full bg-slate-950 hover:bg-slate-800 border border-dora-blue/50 text-sky-300 py-2.5 rounded-xl text-xs font-bold transition">
+                    <i class="fa-solid fa-rotate-left mr-1"></i> Ganti Jenis Game / Perkalian
+                </button>
+            </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- VIEW 3: MODE SETORAN RESMI (EXAM SCREEN) -->
+        <!-- ============================================================ -->
+        <section id="view-official-exam" class="hidden max-w-xl mx-auto space-y-6">
+            <div class="bg-slate-900 p-6 sm:p-8 rounded-3xl border-2 border-dora-red shadow-2xl space-y-6 text-center">
+                <!-- Header Info & Timer -->
+                <div class="flex justify-between items-center bg-slate-950 p-3 rounded-2xl border border-slate-800 text-xs font-bold">
+                    <div class="text-dora-red flex items-center gap-1">
+                        <i class="fa-solid fa-shield-halved"></i> <span id="examTargetText">Tabel Perkalian 2</span>
+                    </div>
+                    <div class="text-dora-yellow">
+                        TOKEN: <span id="examTokenBadge" class="font-mono bg-dora-blue px-2 py-0.5 rounded text-white">PER2A</span>
+                    </div>
+                </div>
+
+                <!-- Progress & Timer Ring -->
+                <div class="space-y-2">
+                    <div class="flex justify-between text-xs text-sky-200 font-semibold">
+                        <span>Soal No. <span id="examQuestionNum" class="text-white font-bold">1</span> dari 20</span>
+                        <span>Waktu Per Soal</span>
+                    </div>
+                    
+                    <div class="w-full bg-slate-950 rounded-full h-3 border border-slate-800 overflow-hidden">
+                        <div id="examProgressBar" class="bg-gradient-to-r from-dora-blue via-dora-yellow to-dora-red h-3 rounded-full transition-all duration-300" style="width: 5%"></div>
+                    </div>
+
+                    <!-- Countdown Display -->
+                    <div class="flex justify-center items-center gap-2 pt-2">
+                        <div class="w-16 h-16 rounded-2xl bg-slate-950 border-2 border-dora-yellow flex items-center justify-center font-game text-3xl text-dora-yellow shadow-lg">
+                            <span id="examTimerDisplay">10</span>
+                        </div>
+                        <span class="text-xs text-sky-300">detik</span>
+                    </div>
+                </div>
+
+                <!-- Soal Display -->
+                <div class="py-4">
+                    <div id="examQuestionText" class="font-game text-6xl text-white tracking-widest bg-slate-950 py-6 rounded-2xl border-2 border-dora-blue shadow-inner">
+                        2 × 7 = ?
+                    </div>
+                </div>
+
+                <!-- Answer Input & Keypad -->
+                <div class="space-y-4">
+                    <div class="flex gap-2 max-w-xs mx-auto">
+                        <input type="number" id="examAnswerInput" placeholder="Jawaban..." readonly class="w-full bg-slate-950 border-2 border-dora-red rounded-xl px-4 py-3 text-center text-3xl font-game text-white focus:outline-none">
+                        <button onclick="submitExamAnswer()" class="bg-dora-red hover:bg-rose-500 text-white font-game font-bold text-xl px-6 py-3 rounded-xl transition">Kirim</button>
+                    </div>
+
+                    <!-- Touch Numpad -->
+                    <div class="grid grid-cols-3 gap-2 max-w-xs mx-auto pt-2">
+                        <button onclick="appendNum('examAnswerInput', '1')" class="bg-slate-950 hover:bg-slate-800 text-white font-game text-2xl py-3 rounded-xl border border-slate-700">1</button>
+                        <button onclick="appendNum('examAnswerInput', '2')" class="bg-slate-950 hover:bg-slate-800 text-white font-game text-2xl py-3 rounded-xl border border-slate-700">2</button>
+                        <button onclick="appendNum('examAnswerInput', '3')" class="bg-slate-950 hover:bg-slate-800 text-white font-game text-2xl py-3 rounded-xl border border-slate-700">3</button>
+                        <button onclick="appendNum('examAnswerInput', '4')" class="bg-slate-950 hover:bg-slate-800 text-white font-game text-2xl py-3 rounded-xl border border-slate-700">4</button>
+                        <button onclick="appendNum('examAnswerInput', '5')" class="bg-slate-950 hover:bg-slate-800 text-white font-game text-2xl py-3 rounded-xl border border-slate-700">5</button>
+                        <button onclick="appendNum('examAnswerInput', '6')" class="bg-slate-950 hover:bg-slate-800 text-white font-game text-2xl py-3 rounded-xl border border-slate-700">6</button>
+                        <button onclick="appendNum('examAnswerInput', '7')" class="bg-slate-950 hover:bg-slate-800 text-white font-game text-2xl py-3 rounded-xl border border-slate-700">7</button>
+                        <button onclick="appendNum('examAnswerInput', '8')" class="bg-slate-950 hover:bg-slate-800 text-white font-game text-2xl py-3 rounded-xl border border-slate-700">8</button>
+                        <button onclick="appendNum('examAnswerInput', '9')" class="bg-slate-950 hover:bg-slate-800 text-white font-game text-2xl py-3 rounded-xl border border-slate-700">9</button>
+                        <button onclick="clearNum('examAnswerInput')" class="bg-dora-red hover:bg-rose-600 text-white font-bold py-3 rounded-xl border border-red-400">C</button>
+                        <button onclick="appendNum('examAnswerInput', '0')" class="bg-slate-950 hover:bg-slate-800 text-white font-game text-2xl py-3 rounded-xl border border-slate-700">0</button>
+                        <button onclick="submitExamAnswer()" class="bg-dora-red hover:bg-rose-500 text-white font-bold py-3 rounded-xl border border-red-400"><i class="fa-solid fa-arrow-right"></i></button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- VIEW 4: HASIL SETORAN RESMI & STATUS LULUS -->
+        <!-- ============================================================ -->
+        <section id="view-exam-result" class="hidden max-w-xl mx-auto space-y-6 text-center">
+            <div class="bg-slate-900 p-6 sm:p-8 rounded-3xl border-2 border-dora-blue shadow-2xl space-y-6">
+                <!-- Status Header -->
+                <div id="resultStatusBadge" class="inline-block px-6 py-2 rounded-full font-game text-lg font-bold">
+                    <!-- Dynamic -->
+                </div>
+
+                <div class="space-y-2">
+                    <div class="text-xs uppercase tracking-wider text-sky-300">Nilai Akhir Setoran</div>
+                    <div id="resultScoreBig" class="font-game text-7xl text-dora-yellow font-extrabold">0</div>
+                    <p id="resultSubtitle" class="text-xs text-sky-200">Menjawab benar 0 dari 20 soal</p>
+                </div>
+
+                <!-- Stats Break Down -->
+                <div class="grid grid-cols-2 gap-4 max-w-xs mx-auto">
+                    <div class="bg-slate-950 p-3 rounded-2xl border border-emerald-500/50">
+                        <div class="text-emerald-400 font-game text-2xl font-bold" id="resultCorrectCount">0</div>
+                        <div class="text-[10px] text-sky-300 uppercase">Jawaban Benar</div>
+                    </div>
+                    <div class="bg-slate-950 p-3 rounded-2xl border border-dora-red/50">
+                        <div class="text-dora-red font-game text-2xl font-bold" id="resultWrongCount">0</div>
+                        <div class="text-[10px] text-sky-300 uppercase">Jawaban Salah</div>
+                    </div>
+                </div>
+
+                <!-- Checkpoint Unlock Status Box -->
+                <div id="resultCheckpointMsg" class="p-4 rounded-2xl text-xs sm:text-sm font-semibold">
+                    <!-- Dynamic -->
+                </div>
+
+                <!-- Action Button -->
+                <button onclick="switchView('home')" class="w-full bg-dora-blue hover:bg-cyan-500 text-slate-950 font-game py-3.5 rounded-2xl font-bold transition shadow-lg">
+                    <i class="fa-solid fa-house mr-2"></i> Kembali Ke Halaman Utama
+                </button>
+            </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- VIEW 5: DASHBOARD GURU -->
+        <!-- ============================================================ -->
+        <section id="view-teacher-dashboard" class="hidden space-y-8">
+            <!-- Header Dashboard -->
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-slate-900 p-6 rounded-3xl border border-dora-blue/50 gap-4">
+                <div>
+                    <h2 class="font-game text-2xl text-dora-yellow flex items-center gap-2">
+                        <i class="fa-solid fa-chalkboard-user"></i> DASHBOARD KELOLA GURU
+                    </h2>
+                    <p class="text-xs text-sky-300">Atur siswa, buat sesi setoran resmi, dan pantau kelulusan real-time.</p>
+                </div>
+                <button onclick="switchView('home')" class="bg-slate-800 hover:bg-slate-700 text-sky-200 text-xs px-4 py-2.5 rounded-xl font-semibold border border-slate-700 transition">
+                    <i class="fa-solid fa-arrow-left mr-1"></i> Keluar Dashboard
+                </button>
+            </div>
+
+            <!-- Stats Overview Cards -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div class="bg-slate-900 p-4 rounded-2xl border border-slate-800 space-y-1">
+                    <div class="text-xs text-sky-300 font-semibold">Total Siswa</div>
+                    <div id="teacherTotalStudents" class="font-game text-3xl text-white">0</div>
+                </div>
+                <div class="bg-slate-900 p-4 rounded-2xl border border-emerald-500/40 space-y-1">
+                    <div class="text-xs text-emerald-400 font-semibold">Siswa Lulus</div>
+                    <div id="teacherPassedCount" class="font-game text-3xl text-emerald-300">0</div>
+                </div>
+                <div class="bg-slate-900 p-4 rounded-2xl border border-dora-red/40 space-y-1">
+                    <div class="text-xs text-dora-red font-semibold">Belum Lulus</div>
+                    <div id="teacherFailedCount" class="font-game text-3xl text-rose-300">0</div>
+                </div>
+                <div class="bg-slate-900 p-4 rounded-2xl border border-dora-yellow/40 space-y-1">
+                    <div class="text-xs text-dora-yellow font-semibold">Belum Setor</div>
+                    <div id="teacherPendingCount" class="font-game text-3xl text-dora-yellow">0</div>
+                </div>
+            </div>
+
+            <!-- Grid Kontrol Guru: Buat Sesi & Tambah Siswa -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Form Buat Sesi Setoran Baru -->
+                <div class="bg-slate-900 p-6 rounded-3xl border border-slate-800 space-y-4">
+                    <h3 class="font-game text-lg text-dora-red flex items-center gap-2">
+                        <i class="fa-solid fa-plus-circle"></i> Buat Sesi Setoran Resmi
+                    </h3>
+                    <form onsubmit="handleCreateSession(event)" class="space-y-3">
+                        <div>
+                            <label class="block text-xs text-sky-300 font-semibold mb-1">Materi Tabel Perkalian</label>
+                            <select id="sessionTableSelect" class="w-full bg-slate-950 border border-slate-700 text-white text-xs rounded-xl p-3 focus:outline-none">
+                                <option value="2">Perkalian 2</option>
+                                <option value="3">Perkalian 3</option>
+                                <option value="4">Perkalian 4</option>
+                                <option value="5">Perkalian 5</option>
+                                <option value="6">Perkalian 6</option>
+                                <option value="7">Perkalian 7</option>
+                                <option value="8">Perkalian 8</option>
+                                <option value="9">Perkalian 9</option>
+                            </select>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs text-sky-300 font-semibold mb-1">Timer Per Soal</label>
+                                <select id="sessionTimerSelect" class="w-full bg-slate-950 border border-slate-700 text-white text-xs rounded-xl p-3 focus:outline-none">
+                                    <option value="7">7 Detik (Cepat)</option>
+                                    <option value="10" selected>10 Detik (Sedang)</option>
+                                    <option value="15">15 Detik (Santai)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs text-sky-300 font-semibold mb-1">Batas Kelulusan (Min. Benar)</label>
+                                <select id="sessionPassingGrade" class="w-full bg-slate-950 border border-slate-700 text-white text-xs rounded-xl p-3 focus:outline-none">
+                                    <option value="14">14 / 20 Soal (70%)</option>
+                                    <option value="15">15 / 20 Soal (75%)</option>
+                                    <option value="16" selected>16 / 20 Soal (80%)</option>
+                                    <option value="18">18 / 20 Soal (90%)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="w-full bg-dora-red hover:bg-rose-500 text-white font-game text-sm py-3 rounded-xl font-bold transition shadow-lg">
+                            <i class="fa-solid fa-key mr-1"></i> Generate Token Sesi Baru
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Active Token Sessions Table -->
+                <div class="bg-slate-900 p-6 rounded-3xl border border-slate-800 space-y-4">
+                    <h3 class="font-game text-lg text-dora-yellow flex items-center gap-2">
+                        <i class="fa-solid fa-list"></i> Daftar Sesi & Token Aktif
+                    </h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs text-sky-200">
+                            <thead class="bg-slate-950 text-sky-400 font-semibold uppercase">
+                                <tr>
+                                    <th class="p-2.5">Token</th>
+                                    <th class="p-2.5">Materi</th>
+                                    <th class="p-2.5">Waktu</th>
+                                    <th class="p-2.5">Min Lulus</th>
+                                    <th class="p-2.5 text-right">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="teacherActiveSessionsTable" class="divide-y divide-slate-800">
+                                <!-- Dynamic -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Student Management & Exam History Tabs -->
+            <div class="bg-slate-900 p-6 rounded-3xl border border-slate-800 space-y-6">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <h3 class="font-game text-lg text-dora-blue flex items-center gap-2">
+                        <i class="fa-solid fa-users"></i> Kelola Data Siswa & Progress Checkpoint
+                    </h3>
+                    <!-- Form Tambah Siswa -->
+                    <div class="flex gap-2 w-full sm:w-auto">
+                        <input type="text" id="newStudentNameInput" placeholder="Nama Siswa Baru..." class="bg-slate-950 border border-slate-700 text-white text-xs px-3 py-2 rounded-xl focus:outline-none flex-grow">
+                        <button onclick="handleAddStudent()" class="bg-dora-blue hover:bg-cyan-400 text-slate-950 font-bold text-xs px-4 py-2 rounded-xl transition whitespace-nowrap">
+                            + Tambah
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Table Daftar Siswa -->
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs text-sky-200">
+                        <thead class="bg-slate-950 text-sky-400 font-semibold uppercase">
+                            <tr>
+                                <th class="p-3">Nama Siswa</th>
+                                <th class="p-3">Checkpoint Terbuka</th>
+                                <th class="p-3">Total Setoran</th>
+                                <th class="p-3 text-right">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="teacherStudentListTable" class="divide-y divide-slate-800">
+                            <!-- Dynamic -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <hr class="border-slate-800 my-4">
+
+                <!-- Riwayat Setoran Resmi -->
+                <div>
+                    <h3 class="font-game text-lg text-purple-300 mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-clock-rotate-left"></i> Riwayat Pengerjaan Setoran Siswa
+                    </h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs text-sky-200">
+                            <thead class="bg-slate-950 text-sky-400 font-semibold uppercase">
+                                <tr>
+                                    <th class="p-3">Waktu</th>
+                                    <th class="p-3">Siswa</th>
+                                    <th class="p-3">Target</th>
+                                    <th class="p-3">Skor Detail</th>
+                                    <th class="p-3">Nilai</th>
+                                    <th class="p-3">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="teacherExamHistoryTable" class="divide-y divide-slate-800">
+                                <!-- Dynamic -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ============================================================ -->
+    <!-- MODALS & OVERLAYS -->
+    <!-- ============================================================ -->
+
+    <!-- Modal Token Input Setoran Resmi -->
+    <div id="modalOfficialSession" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-slate-900 border-2 border-dora-red p-6 sm:p-8 rounded-3xl max-w-md w-full space-y-6 shadow-2xl relative">
+            <div class="text-center space-y-2">
+                <div class="w-14 h-14 rounded-2xl bg-dora-red/20 text-dora-red flex items-center justify-center mx-auto text-2xl">
+                    <i class="fa-solid fa-key"></i>
+                </div>
+                <h3 class="font-game text-2xl text-white">MASUKKAN TOKEN SETORAN</h3>
+                <p class="text-xs text-sky-300">Dapatkan token dari gurumu untuk memulai evaluasi resmi!</p>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <input type="text" id="tokenInputModal" uppercase placeholder="Contoh: PER2A" class="w-full bg-slate-950 border-2 border-dora-red rounded-2xl px-4 py-3 text-center text-2xl font-mono font-bold text-dora-yellow focus:outline-none uppercase">
+                </div>
+                
+                <div class="flex gap-3">
+                    <button onclick="closeOfficialSessionModal()" class="w-1/2 bg-slate-950 hover:bg-slate-800 border border-slate-700 text-sky-300 py-3 rounded-2xl font-bold text-xs transition">
+                        Batal
+                    </button>
+                    <button onclick="startOfficialSessionByToken()" class="w-1/2 bg-dora-red hover:bg-rose-500 text-white py-3 rounded-2xl font-game font-bold text-sm transition shadow-lg">
+                        Mulai Setoran
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Login Guru -->
+    <div id="modalTeacherLogin" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-slate-900 border-2 border-dora-yellow p-6 sm:p-8 rounded-3xl max-w-md w-full space-y-6 shadow-2xl relative">
+            <div class="text-center space-y-2">
+                <div class="w-14 h-14 rounded-2xl bg-dora-yellow/20 text-dora-yellow flex items-center justify-center mx-auto text-2xl">
+                    <i class="fa-solid fa-user-shield"></i>
+                </div>
+                <h3 class="font-game text-2xl text-white">AKSES DASHBOARD GURU</h3>
+                <p class="text-xs text-sky-300">Masukkan PIN Keamanan Guru untuk mengelola kelas.</p>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <input type="password" id="teacherPinInput" placeholder="Masukkan PIN (Default: 1234)" class="w-full bg-slate-950 border-2 border-dora-yellow rounded-2xl px-4 py-3 text-center text-2xl font-mono text-white focus:outline-none">
+                </div>
+                
+                <div class="flex gap-3">
+                    <button onclick="closeTeacherLoginModal()" class="w-1/2 bg-slate-950 hover:bg-slate-800 border border-slate-700 text-sky-300 py-3 rounded-2xl font-bold text-xs transition">
+                        Batal
+                    </button>
+                    <button onclick="verifyTeacherPin()" class="w-1/2 bg-dora-yellow hover:bg-amber-400 text-slate-950 py-3 rounded-2xl font-game font-bold text-sm transition shadow-lg">
+                        Masuk
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Edit Nama Siswa -->
+    <div id="modalEditStudent" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-slate-900 border-2 border-dora-blue p-6 sm:p-8 rounded-3xl max-w-md w-full space-y-6 shadow-2xl relative">
+            <div class="text-center space-y-2">
+                <div class="w-14 h-14 rounded-2xl bg-dora-blue/20 text-dora-blue flex items-center justify-center mx-auto text-2xl">
+                    <i class="fa-solid fa-user-pen"></i>
+                </div>
+                <h3 class="font-game text-2xl text-white">EDIT NAMA SISWA</h3>
+                <p class="text-xs text-sky-300">Ubah nama siswa yang terdaftar.</p>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <input type="hidden" id="editStudentIdInput">
+                    <input type="text" id="editStudentNameInput" placeholder="Nama Siswa..." class="w-full bg-slate-950 border-2 border-dora-blue rounded-2xl px-4 py-3 text-center text-lg font-bold text-white focus:outline-none">
+                </div>
+                
+                <div class="flex gap-3">
+                    <button onclick="closeEditStudentModal()" class="w-1/2 bg-slate-950 hover:bg-slate-800 border border-slate-700 text-sky-300 py-3 rounded-2xl font-bold text-xs transition">
+                        Batal
+                    </button>
+                    <button onclick="saveStudentEdit()" class="w-1/2 bg-dora-blue hover:bg-cyan-400 text-slate-950 py-3 rounded-2xl font-game font-bold text-sm transition shadow-lg">
+                        Simpan
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-slate-800 py-4 px-4 text-center text-xs text-sky-400">
+        <p>© PERMAINAN PERKALIAN DORAEMON - Media Pembelajaran Interaktif SD Indonesia</p>
+    </footer>
+
+    <!-- SCRIPT APPLICATION CONTROLLER -->
+    <script>
+        // Web Audio API Sound Generator for games
+        const AudioFX = {
+            ctx: null,
+            init() {
+                if (!this.ctx) {
+                    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+            },
+            playCorrect() {
+                this.init();
+                if(!this.ctx) return;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(523.25, this.ctx.currentTime); // C5
+                osc.frequency.exponentialRampToValueAtTime(880, this.ctx.currentTime + 0.15); // A5
+                gain.gain.setValueAtTime(0.3, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.2);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.2);
+            },
+            playWrong() {
+                this.init();
+                if(!this.ctx) return;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(220, this.ctx.currentTime); // A3
+                osc.frequency.exponentialRampToValueAtTime(110, this.ctx.currentTime + 0.2); // A2
+                gain.gain.setValueAtTime(0.3, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.25);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.25);
+            }
+        };
+
+        /* ============================================================
+           DATA STORE & INITIALIZATION
+           ============================================================ */
+        const DEFAULT_STUDENTS = [
+            { id: 's1', name: 'Nobita Nobi', unlockedCheckpoints: [2, 3] },
+            { id: 's2', name: 'Shizuka Minamoto', unlockedCheckpoints: [2, 3, 4] },
+            { id: 's3', name: 'Takeshi Gouda (Giant)', unlockedCheckpoints: [] },
+            { id: 's4', name: 'Suneo Honekawa', unlockedCheckpoints: [2, 3] }
+        ];
+
+        const DEFAULT_SESSIONS = [
+            { id: 'ses1', token: 'PER2A', targetTable: 2, timerSeconds: 10, passingGrade: 15, active: true },
+            { id: 'ses2', token: 'PER3B', targetTable: 3, timerSeconds: 10, passingGrade: 16, active: true }
+        ];
+
+        // Load or init state from localStorage
+        let state = {
+            students: JSON.parse(localStorage.getItem('pk_students')) || DEFAULT_STUDENTS,
+            sessions: JSON.parse(localStorage.getItem('pk_sessions')) || DEFAULT_SESSIONS,
+            examResults: JSON.parse(localStorage.getItem('pk_results')) || [],
+            currentStudentId: localStorage.getItem('pk_current_student_id') || 's1'
+        };
+
+        function saveData() {
+            localStorage.setItem('pk_students', JSON.stringify(state.students));
+            localStorage.setItem('pk_sessions', JSON.stringify(state.sessions));
+            localStorage.setItem('pk_results', JSON.stringify(state.examResults));
+            localStorage.setItem('pk_current_student_id', state.currentStudentId);
+        }
+
+        /* Checkpoint Definitions Doraemon Gadgets (2 to 9) */
+        const CHECKPOINTS = [
+            { table: 2, name: 'Baling-Baling Bambu', icon: 'fa-fan', color: 'from-dora-blue to-cyan-600' },
+            { table: 3, name: 'Pintu Kemana Saja', icon: 'fa-door-open', color: 'from-pink-500 to-rose-600' },
+            { table: 4, name: 'Mesin Waktu', icon: 'fa-clock', color: 'from-amber-400 to-dora-yellow' },
+            { table: 5, name: 'Senter Pembesar', icon: 'fa-flashlight', color: 'from-emerald-500 to-teal-600' },
+            { table: 6, name: 'Roti Penghafal', icon: 'fa-bread-slice', color: 'from-orange-500 to-amber-600' },
+            { table: 7, name: 'Kain Pembungkus Waktu', icon: 'fa-rug', color: 'from-purple-500 to-indigo-600' },
+            { table: 8, name: 'Kamera Pengubah Baju', icon: 'fa-camera', color: 'from-dora-red to-rose-700' },
+            { table: 9, name: 'Kantong Ajaib Utama', icon: 'fa-box-open', color: 'from-cyan-400 to-dora-blue' }
+        ];
+
+        /* ============================================================
+           NAVIGATION & VIEW CONTROLLER
+           ============================================================ */
+        function switchView(viewName) {
+            // Hide all views
+            ['home', 'practice', 'official-exam', 'exam-result', 'teacher-dashboard'].forEach(id => {
+                document.getElementById(`view-${id}`).classList.add('hidden');
+            });
+
+            if (viewName === 'teacher-login') {
+                document.getElementById('modalTeacherLogin').classList.remove('hidden');
+                document.getElementById('view-home').classList.remove('hidden');
+                return;
+            }
+
+            // Show selected view
+            const targetView = document.getElementById(`view-${viewName}`);
+            if (targetView) targetView.classList.remove('hidden');
+
+            // View-specific renders
+            if (viewName === 'home') renderHomeView();
+            if (viewName === 'teacher-dashboard') renderTeacherDashboard();
+        }
+
+        function getCurrentStudent() {
+            return state.students.find(s => s.id === state.currentStudentId) || state.students[0];
+        }
+
+        function changeCurrentStudent(id) {
+            state.currentStudentId = id;
+            saveData();
+            renderHomeView();
+        }
+
+        function handleAddStudent() {
+            const input = document.getElementById('newStudentNameInput');
+            const name = input.value.trim();
+            if (!name) return;
+
+            const newStudent = {
+                id: 's_' + Date.now(),
+                name: name,
+                unlockedCheckpoints: []
+            };
+
+            state.students.push(newStudent);
+            state.currentStudentId = newStudent.id;
+            input.value = '';
+            saveData();
+            renderTeacherDashboard();
+            renderHomeView();
+        }
+
+        /* ============================================================
+           MODE LATIHAN MANDIRI (4 SUB-GAMES LOGIC)
+           ============================================================ */
+        let practiceState = {
+            gameMode: 'classic', // 'classic', 'quiz', 'memory', 'truefalse'
+            table: 2,
+            score: 0,
+            num1: 2,
+            num2: 1,
+            correctAnswer: 2,
+            tfClaimAnswer: 2,
+            isTFClaimCorrect: true,
+            memoryCards: [],
+            selectedCards: [],
+            availableMultipliers: [] // Antrean pengacak multiplier agar tidak ada soal berulang
+        };
+
+        // Fungsi pembantu untuk mengambil multiplier (1-10) tanpa pengulangan
+        function getNextMultiplier() {
+            if (!practiceState.availableMultipliers || practiceState.availableMultipliers.length === 0) {
+                // Isi ulang antrean multiplier 1-10 dan acak posisinya
+                practiceState.availableMultipliers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].sort(() => Math.random() - 0.5);
+            }
+            return practiceState.availableMultipliers.pop();
+        }
+
+        function selectPracticeGameMode(mode) {
+            practiceState.gameMode = mode;
+            ['classic', 'quiz', 'memory', 'truefalse'].forEach(m => {
+                const card = document.getElementById(`gameModeCard-${m}`);
+                if (m === mode) {
+                    card.className = "cursor-pointer bg-slate-950 border-2 border-dora-yellow p-4 rounded-2xl text-center transition group shadow-lg shadow-dora-blue/30";
+                } else {
+                    card.className = "cursor-pointer bg-slate-950 border-2 border-slate-800 hover:border-dora-blue p-4 rounded-2xl text-center transition group opacity-75";
+                }
+            });
+        }
+
+        function startPracticeMode() {
+            switchView('practice');
+            document.getElementById('practiceTableSelector').classList.remove('hidden');
+            document.getElementById('practiceInteractiveArea').classList.add('hidden');
+        }
+
+        function startPracticeSession(table) {
+            practiceState.table = table;
+            practiceState.score = 0;
+            practiceState.availableMultipliers = []; // Reset antrean soal berulang
+            document.getElementById('practiceTableSelector').classList.add('hidden');
+            document.getElementById('practiceInteractiveArea').classList.remove('hidden');
+            document.getElementById('practiceTargetTitle').textContent = `x${table}`;
+            document.getElementById('practiceScoreCounter').textContent = '0';
+
+            // Hide all sub-game containers
+            ['subGameClassic', 'subGameQuiz', 'subGameMemory', 'subGameTrueFalse'].forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
+
+            if (practiceState.gameMode === 'classic') {
+                document.getElementById('subGameClassic').classList.remove('hidden');
+                document.getElementById('practiceGameTitleDisplay').textContent = 'Klasik Ketik';
+                nextPracticeQuestionClassic();
+            } else if (practiceState.gameMode === 'quiz') {
+                document.getElementById('subGameQuiz').classList.remove('hidden');
+                document.getElementById('practiceGameTitleDisplay').textContent = 'Tembak Dorayaki (PG)';
+                nextPracticeQuestionQuiz();
+            } else if (practiceState.gameMode === 'memory') {
+                document.getElementById('subGameMemory').classList.remove('hidden');
+                document.getElementById('practiceGameTitleDisplay').textContent = 'Kartu Memori';
+                setupMemoryGame();
+            } else if (practiceState.gameMode === 'truefalse') {
+                document.getElementById('subGameTrueFalse').classList.remove('hidden');
+                document.getElementById('practiceGameTitleDisplay').textContent = 'Baling-Baling Benar/Salah';
+                nextPracticeQuestionTF();
+            }
+        }
+
+        // --- GAME 1: KLASIK ---
+        function nextPracticeQuestionClassic() {
+            practiceState.num1 = practiceState.table;
+            practiceState.num2 = getNextMultiplier();
+            practiceState.correctAnswer = practiceState.num1 * practiceState.num2;
+
+            document.getElementById('practiceQuestionText').textContent = `${practiceState.num1} × ${practiceState.num2} = ?`;
+            document.getElementById('practiceAnswerInput').value = '';
+            document.getElementById('practiceFeedback').classList.add('hidden');
+        }
+
+        function submitPracticeAnswer() {
+            const val = parseInt(document.getElementById('practiceAnswerInput').value);
+            checkAnswer(val === practiceState.correctAnswer, `${practiceState.num1} × ${practiceState.num2} = ${practiceState.correctAnswer}`, nextPracticeQuestionClassic);
+        }
+
+        // --- GAME 2: PILIHAN GANDA ---
+        function nextPracticeQuestionQuiz() {
+            practiceState.num1 = practiceState.table;
+            practiceState.num2 = getNextMultiplier();
+            practiceState.correctAnswer = practiceState.num1 * practiceState.num2;
+
+            document.getElementById('quizQuestionText').textContent = `${practiceState.num1} × ${practiceState.num2} = ?`;
+            document.getElementById('practiceFeedback').classList.add('hidden');
+
+            // Generate 4 unique options including correct answer
+            let options = new Set([practiceState.correctAnswer]);
+            while (options.size < 4) {
+                let fakeAns = practiceState.table * (Math.floor(Math.random() * 10) + 1) + (Math.random() < 0.5 ? 1 : -1);
+                if (fakeAns > 0 && fakeAns !== practiceState.correctAnswer) options.add(fakeAns);
+            }
+            let optionsArray = Array.from(options).sort(() => Math.random() - 0.5);
+
+            const grid = document.getElementById('quizOptionsGrid');
+            grid.innerHTML = optionsArray.map(opt => `
+                <button onclick="submitQuizOption(${opt})" class="bg-slate-950 hover:bg-dora-blue border border-dora-yellow text-white font-game text-2xl py-4 rounded-2xl transition transform active:scale-95 shadow-md flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-cookie-bite text-xs text-dora-yellow"></i> ${opt}
+                </button>
+            `).join('');
+        }
+
+        function submitQuizOption(val) {
+            checkAnswer(val === practiceState.correctAnswer, `${practiceState.num1} × ${practiceState.num2} = ${practiceState.correctAnswer}`, nextPracticeQuestionQuiz);
+        }
+
+        // --- GAME 3: KARTU MEMORI ---
+        function setupMemoryGame() {
+            document.getElementById('practiceFeedback').classList.add('hidden');
+            practiceState.selectedCards = [];
+
+            // Pick 4 multiplication facts for table without repeats until exhausted
+            let multipliers = [];
+            for (let i = 0; i < 4; i++) {
+                multipliers.push(getNextMultiplier());
+            }
+            let cards = [];
+
+            multipliers.forEach((m, idx) => {
+                cards.push({ id: `q_${idx}`, pairId: idx, text: `${practiceState.table} × ${m}`, type: 'question' });
+                cards.push({ id: `a_${idx}`, pairId: idx, text: `${practiceState.table * m}`, type: 'answer' });
+            });
+
+            cards.sort(() => Math.random() - 0.5);
+            practiceState.memoryCards = cards;
+
+            renderMemoryCards();
+        }
+
+        function renderMemoryCards() {
+            const grid = document.getElementById('memoryCardsGrid');
+            grid.innerHTML = practiceState.memoryCards.map((card, idx) => `
+                <button id="memCard_${idx}" onclick="flipMemoryCard(${idx})" class="h-20 bg-slate-950 hover:bg-slate-800 border-2 border-dora-blue rounded-xl font-game text-base text-white flex items-center justify-center transition p-2">
+                    <i class="fa-solid fa-bell text-dora-yellow text-xl"></i>
+                </button>
+            `).join('');
+        }
+
+        function flipMemoryCard(idx) {
+            if (practiceState.selectedCards.length >= 2) return;
+            const card = practiceState.memoryCards[idx];
+            const cardEl = document.getElementById(`memCard_${idx}`);
+
+            if (cardEl.classList.contains('matched') || practiceState.selectedCards.some(c => c.index === idx)) return;
+
+            cardEl.innerHTML = `<span class="text-dora-yellow font-bold">${card.text}</span>`;
+            cardEl.classList.add('border-dora-red');
+
+            practiceState.selectedCards.push({ index: idx, data: card });
+
+            if (practiceState.selectedCards.length === 2) {
+                const [c1, c2] = practiceState.selectedCards;
+                if (c1.data.pairId === c2.data.pairId) {
+                    // Match found
+                    AudioFX.playCorrect();
+                    practiceState.score += 5;
+                    document.getElementById('practiceScoreCounter').textContent = practiceState.score;
+                    
+                    document.getElementById(`memCard_${c1.index}`).className = "h-20 bg-emerald-950/80 border-2 border-emerald-500 rounded-xl font-game text-emerald-300 flex items-center justify-center p-2 matched";
+                    document.getElementById(`memCard_${c2.index}`).className = "h-20 bg-emerald-950/80 border-2 border-emerald-500 rounded-xl font-game text-emerald-300 flex items-center justify-center p-2 matched";
+                    
+                    practiceState.selectedCards = [];
+
+                    // Check if all matched
+                    const matchedCount = document.querySelectorAll('.matched').length;
+                    if (matchedCount >= practiceState.memoryCards.length) {
+                        setTimeout(() => {
+                            const feedbackEl = document.getElementById('practiceFeedback');
+                            feedbackEl.classList.remove('hidden');
+                            feedbackEl.className = "p-3 rounded-xl font-bold text-center text-xs bg-emerald-500/20 text-emerald-300 border border-emerald-500/50";
+                            feedbackEl.innerHTML = `<i class="fa-solid fa-trophy mr-1"></i> Hebat! Semua Kartu Terjodohkan! Mengacak kartu baru...`;
+                            setTimeout(setupMemoryGame, 1800);
+                        }, 500);
+                    }
+                } else {
+                    // Not matched
+                    AudioFX.playWrong();
+                    setTimeout(() => {
+                        renderMemoryCardReset(c1.index);
+                        renderMemoryCardReset(c2.index);
+                        practiceState.selectedCards = [];
+                    }, 1000);
+                }
+            }
+        }
+
+        function renderMemoryCardReset(idx) {
+            const cardEl = document.getElementById(`memCard_${idx}`);
+            if (cardEl && !cardEl.classList.contains('matched')) {
+                cardEl.innerHTML = `<i class="fa-solid fa-bell text-dora-yellow text-xl"></i>`;
+                cardEl.classList.remove('border-dora-red');
+            }
+        }
+
+        // --- GAME 4: BENAR / SALAH ---
+        function nextPracticeQuestionTF() {
+            practiceState.num1 = practiceState.table;
+            practiceState.num2 = getNextMultiplier();
+            practiceState.correctAnswer = practiceState.num1 * practiceState.num2;
+            
+            // 50% chance of showing correct claim vs fake claim
+            practiceState.isTFClaimCorrect = Math.random() < 0.5;
+            if (practiceState.isTFClaimCorrect) {
+                practiceState.tfClaimAnswer = practiceState.correctAnswer;
+            } else {
+                practiceState.tfClaimAnswer = practiceState.correctAnswer + (Math.random() < 0.5 ? 2 : -1);
+                if (practiceState.tfClaimAnswer === practiceState.correctAnswer) practiceState.tfClaimAnswer += 3;
+            }
+
+            document.getElementById('tfQuestionText').textContent = `${practiceState.num1} × ${practiceState.num2} = ${practiceState.tfClaimAnswer}`;
+            document.getElementById('practiceFeedback').classList.add('hidden');
+        }
+
+        function submitTFAnswer(userThoughtTrue) {
+            const isCorrect = userThoughtTrue === practiceState.isTFClaimCorrect;
+            checkAnswer(isCorrect, `${practiceState.num1} × ${practiceState.num2} = ${practiceState.correctAnswer}`, nextPracticeQuestionTF);
+        }
+
+        // General feedback & score handler for games
+        function checkAnswer(isCorrect, solutionMsg, nextQuestionFn) {
+            const feedbackEl = document.getElementById('practiceFeedback');
+            feedbackEl.classList.remove('hidden');
+
+            if (isCorrect) {
+                AudioFX.playCorrect();
+                practiceState.score++;
+                document.getElementById('practiceScoreCounter').textContent = practiceState.score;
+                feedbackEl.className = "p-3 rounded-xl font-bold text-center text-xs bg-emerald-500/20 text-emerald-300 border border-emerald-500/50";
+                feedbackEl.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> Benar Sekali! (${solutionMsg})`;
+                setTimeout(nextQuestionFn, 1200);
+            } else {
+                AudioFX.playWrong();
+                feedbackEl.className = "p-3 rounded-xl font-bold text-center text-xs bg-rose-500/20 text-rose-300 border border-rose-500/50";
+                feedbackEl.innerHTML = `<i class="fa-solid fa-circle-xmark mr-1"></i> Kurang Tepat! (${solutionMsg})`;
+            }
+        }
+
+        function renderHomeView() {
+            // Update Student Selector options
+            const selectEl = document.getElementById('studentSelectHeader');
+            selectEl.innerHTML = state.students.map(s => 
+                `<option value="${s.id}" ${s.id === state.currentStudentId ? 'selected' : ''}>${s.name}</option>`
+            ).join('');
+
+            const curr = getCurrentStudent();
+            if (curr) {
+                document.getElementById('currentStudentNameDisplay').textContent = curr.name;
+            }
+
+            // Render Checkpoints Grid
+            const unlocked = curr ? (curr.unlockedCheckpoints || []) : [];
+            document.getElementById('checkpointsProgressBadge').textContent = `${unlocked.length} / 8 Alat`;
+
+            const gridEl = document.getElementById('checkpointsGrid');
+            gridEl.innerHTML = CHECKPOINTS.map(cp => {
+                const isUnlocked = unlocked.includes(cp.table);
+                return `
+                    <div class="relative overflow-hidden rounded-2xl p-4 border-2 transition duration-300 ${isUnlocked ? 'bg-gradient-to-br ' + cp.color + ' border-white shadow-lg' : 'bg-slate-950 border-slate-800 opacity-60'}">
+                        <div class="flex justify-between items-start mb-3">
+                            <span class="font-game text-xs px-2.5 py-1 rounded-full ${isUnlocked ? 'bg-white/20 text-white' : 'bg-slate-800 text-sky-300'}">
+                                Perkalian ${cp.table}
+                            </span>
+                            <i class="fa-solid ${isUnlocked ? 'fa-lock-open text-dora-yellow' : 'fa-lock text-slate-600'} text-sm"></i>
+                        </div>
+                        <div class="text-center py-2">
+                            <i class="fa-solid ${cp.icon} text-4xl mb-2 ${isUnlocked ? 'text-white animate-bounce' : 'text-slate-600'}"></i>
+                            <div class="font-game text-sm text-white font-bold">${cp.name}</div>
+                            <div class="text-[10px] mt-1 ${isUnlocked ? 'text-white/80' : 'text-sky-300'}">
+                                ${isUnlocked ? 'Terbuka & Dikuasai!' : 'Terkunci (Perlu Setoran Resmi)'}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        /* ============================================================
+           SETORAN RESMI LOGIC (EXAM WITH TOKEN & TIMER)
+           ============================================================ */
+        let examState = {
+            session: null,
+            questions: [],
+            currentIndex: 0,
+            userAnswers: [],
+            timerInterval: null,
+            timeLeft: 10
+        };
+
+        function openOfficialSessionModal() {
+            document.getElementById('modalOfficialSession').classList.remove('hidden');
+            document.getElementById('tokenInputModal').value = '';
+        }
+
+        function closeOfficialSessionModal() {
+            document.getElementById('modalOfficialSession').classList.add('hidden');
+        }
+
+        function startOfficialSessionByToken() {
+            const token = document.getElementById('tokenInputModal').value.trim().toUpperCase();
+            if (!token) {
+                alert('Silakan masukkan token setoran dari gurumu!');
+                return;
+            }
+
+            const session = state.sessions.find(s => s.token === token && s.active);
+            if (!session) {
+                alert('Token tidak ditemukan atau sesi sudah tidak aktif!');
+                return;
+            }
+
+            closeOfficialSessionModal();
+            initOfficialExam(session);
+        }
+
+        function initOfficialExam(session) {
+            examState.session = session;
+            examState.currentIndex = 0;
+            examState.userAnswers = [];
+
+            // Generate 20 randomized questions (2 full non-repeating rounds of 1 to 10)
+            const round1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].sort(() => Math.random() - 0.5);
+            const round2 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].sort(() => Math.random() - 0.5);
+
+            // Pastikan soal pertama round 2 tidak sama dengan soal terakhir round 1
+            if (round2[0] === round1[9]) {
+                const temp = round2[0];
+                round2[0] = round2[1];
+                round2[1] = temp;
+            }
+
+            const multipliers = [...round1, ...round2];
+
+            examState.questions = multipliers.map(m => ({
+                num1: session.targetTable,
+                num2: m,
+                answer: session.targetTable * m
+            }));
+
+            switchView('official-exam');
+            document.getElementById('examTargetText').textContent = `Tabel Perkalian ${session.targetTable}`;
+            document.getElementById('examTokenBadge').textContent = session.token;
+            
+            showExamQuestion();
+        }
+
+        function showExamQuestion() {
+            clearInterval(examState.timerInterval);
+            
+            if (examState.currentIndex >= 20) {
+                finishOfficialExam();
+                return;
+            }
+
+            const q = examState.questions[examState.currentIndex];
+            document.getElementById('examQuestionNum').textContent = examState.currentIndex + 1;
+            document.getElementById('examQuestionText').textContent = `${q.num1} × ${q.num2} = ?`;
+            document.getElementById('examAnswerInput').value = '';
+
+            // Update Progress bar
+            const pct = ((examState.currentIndex) / 20) * 100;
+            document.getElementById('examProgressBar').style.width = `${pct}%`;
+
+            // Setup timer
+            examState.timeLeft = examState.session.timerSeconds;
+            document.getElementById('examTimerDisplay').textContent = examState.timeLeft;
+
+            examState.timerInterval = setInterval(() => {
+                examState.timeLeft--;
+                document.getElementById('examTimerDisplay').textContent = examState.timeLeft;
+                if (examState.timeLeft <= 0) {
+                    clearInterval(examState.timerInterval);
+                    // Time expired -> count as wrong answer automatically
+                    recordExamAnswer(null);
+                }
+            }, 1000);
+        }
+
+        function submitExamAnswer() {
+            const inputVal = document.getElementById('examAnswerInput').value;
+            const ans = inputVal === '' ? null : parseInt(inputVal);
+            clearInterval(examState.timerInterval);
+            recordExamAnswer(ans);
+        }
+
+        function recordExamAnswer(userAns) {
+            const q = examState.questions[examState.currentIndex];
+            const isCorrect = userAns === q.answer;
+            
+            if(isCorrect) AudioFX.playCorrect();
+            else AudioFX.playWrong();
+
+            examState.userAnswers.push({
+                num1: q.num1,
+                num2: q.num2,
+                correctAnswer: q.answer,
+                userAnswer: userAns,
+                isCorrect: isCorrect
+            });
+
+            examState.currentIndex++;
+            showExamQuestion();
+        }
+
+        function finishOfficialExam() {
+            clearInterval(examState.timerInterval);
+
+            // Calculate results
+            const correctCount = examState.userAnswers.filter(a => a.isCorrect).length;
+            const wrongCount = 20 - correctCount;
+            const score = Math.round((correctCount / 20) * 100);
+            const isPassed = correctCount >= examState.session.passingGrade;
+
+            const student = getCurrentStudent();
+            const targetTable = examState.session.targetTable;
+
+            // Save result log
+            const resultEntry = {
+                id: 'res_' + Date.now(),
+                studentId: student.id,
+                studentName: student.name,
+                token: examState.session.token,
+                targetTable: targetTable,
+                correctCount: correctCount,
+                wrongCount: wrongCount,
+                score: score,
+                isPassed: isPassed,
+                timestamp: new Date().toLocaleString('id-ID')
+            };
+            state.examResults.unshift(resultEntry);
+
+            // UNLOCK CHECKPOINT ONLY IF PASSED
+            let newlyUnlocked = false;
+            if (isPassed && student) {
+                if (!student.unlockedCheckpoints) student.unlockedCheckpoints = [];
+                if (!student.unlockedCheckpoints.includes(targetTable)) {
+                    student.unlockedCheckpoints.push(targetTable);
+                    student.unlockedCheckpoints.sort((a, b) => a - b);
+                    newlyUnlocked = true;
+                }
+            }
+
+            saveData();
+
+            // Render Results View
+            switchView('exam-result');
+            document.getElementById('resultScoreBig').textContent = score;
+            document.getElementById('resultCorrectCount').textContent = correctCount;
+            document.getElementById('resultWrongCount').textContent = wrongCount;
+            document.getElementById('resultSubtitle').textContent = `Menjawab benar ${correctCount} dari 20 soal (Syarat Lulus: ${examState.session.passingGrade})`;
+
+            const statusBadge = document.getElementById('resultStatusBadge');
+            const msgEl = document.getElementById('resultCheckpointMsg');
+
+            if (isPassed) {
+                statusBadge.className = "inline-block px-6 py-2 rounded-full font-game text-lg font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/60 shadow-lg shadow-emerald-950/50";
+                statusBadge.innerHTML = `<i class="fa-solid fa-trophy text-dora-yellow mr-2"></i> SELAMAT, KAMU LULUS!`;
+
+                msgEl.className = "p-4 rounded-2xl bg-emerald-950/60 border border-emerald-700/80 text-emerald-200 text-xs sm:text-sm";
+                msgEl.innerHTML = newlyUnlocked 
+                    ? `<i class="fa-solid fa-star text-dora-yellow text-lg mr-1"></i> <strong>ALAT DORAEMON BARU!</strong> Checkpoint Perkalian ${targetTable} berhasil dibuka!`
+                    : `<i class="fa-solid fa-circle-check text-emerald-400 mr-1"></i> Kamu telah mempertahankan kelulusan pada Checkpoint Perkalian ${targetTable}!`;
+            } else {
+                statusBadge.className = "inline-block px-6 py-2 rounded-full font-game text-lg font-bold bg-dora-red/20 text-rose-300 border border-dora-red/60 shadow-lg shadow-rose-950/50";
+                statusBadge.innerHTML = `<i class="fa-solid fa-heart-crack text-dora-red mr-2"></i> BELUM LULUS`;
+
+                msgEl.className = "p-4 rounded-2xl bg-rose-950/60 border border-rose-700/80 text-rose-200 text-xs sm:text-sm";
+                msgEl.innerHTML = `<i class="fa-solid fa-circle-info text-dora-red mr-1"></i> Kamu butuh minimal <strong>${examState.session.passingGrade} jawaban benar</strong> untuk lulus. Minta guru untuk mencoba sesi setoran lagi!`;
+            }
+        }
+
+        /* ============================================================
+           NUMPAD UTILITY FOR TOUCH & MOBILE
+           ============================================================ */
+        function appendNum(inputId, numStr) {
+            const el = document.getElementById(inputId);
+            if (el.value.length < 4) {
+                el.value += numStr;
+            }
+        }
+
+        function clearNum(inputId) {
+            document.getElementById(inputId).value = '';
+        }
+
+        /* ============================================================
+           DASHBOARD GURU LOGIC
+           ============================================================ */
+        function closeTeacherLoginModal() {
+            document.getElementById('modalTeacherLogin').classList.add('hidden');
+        }
+
+        function verifyTeacherPin() {
+            const pin = document.getElementById('teacherPinInput').value;
+            if (pin === '1234' || pin === 'admin') {
+                closeTeacherLoginModal();
+                switchView('teacher-dashboard');
+            } else {
+                alert('PIN Salah! (Default PIN: 1234)');
+            }
+        }
+
+        function handleCreateSession(e) {
+            e.preventDefault();
+            const table = parseInt(document.getElementById('sessionTableSelect').value);
+            const timer = parseInt(document.getElementById('sessionTimerSelect').value);
+            const passing = parseInt(document.getElementById('sessionPassingGrade').value);
+
+            // Generate Random 5-letter Token
+            const token = 'PER' + table + Math.random().toString(36).substring(2, 4).toUpperCase();
+
+            const newSession = {
+                id: 'ses_' + Date.now(),
+                token: token,
+                targetTable: table,
+                timerSeconds: timer,
+                passingGrade: passing,
+                active: true
+            };
+
+            state.sessions.unshift(newSession);
+            saveData();
+            renderTeacherDashboard();
+            alert(`Sesi Setoran Resmi Berhasil Dibuat!\nTOKEN: ${token}`);
+        }
+
+        function toggleSessionActive(sessionId) {
+            const ses = state.sessions.find(s => s.id === sessionId);
+            if (ses) {
+                ses.active = !ses.active;
+                saveData();
+                renderTeacherDashboard();
+            }
+        }
+
+        function openEditStudentModal(studentId) {
+            const student = state.students.find(s => s.id === studentId);
+            if (!student) return;
+
+            document.getElementById('editStudentIdInput').value = student.id;
+            document.getElementById('editStudentNameInput').value = student.name;
+            document.getElementById('modalEditStudent').classList.remove('hidden');
+        }
+
+        function closeEditStudentModal() {
+            document.getElementById('modalEditStudent').classList.add('hidden');
+        }
+
+        function saveStudentEdit() {
+            const id = document.getElementById('editStudentIdInput').value;
+            const newName = document.getElementById('editStudentNameInput').value.trim();
+
+            if (!newName) {
+                alert('Nama siswa tidak boleh kosong!');
+                return;
+            }
+
+            const student = state.students.find(s => s.id === id);
+            if (student) {
+                student.name = newName;
+
+                // Perbarui juga nama siswa di riwayat setoran
+                state.examResults.forEach(r => {
+                    if (r.studentId === id) {
+                        r.studentName = newName;
+                    }
+                });
+
+                saveData();
+                renderTeacherDashboard();
+                renderHomeView();
+                closeEditStudentModal();
+            }
+        }
+
+        function deleteStudent(studentId) {
+            if (confirm('Apakah Anda yakin ingin menghapus data siswa ini?')) {
+                state.students = state.students.filter(s => s.id !== studentId);
+                if (state.currentStudentId === studentId && state.students.length > 0) {
+                    state.currentStudentId = state.students[0].id;
+                }
+                saveData();
+                renderTeacherDashboard();
+            }
+        }
+
+        function renderTeacherDashboard() {
+            // Stats summary calculation
+            const totalS = state.students.length;
+            const passedS = state.students.filter(s => s.unlockedCheckpoints && s.unlockedCheckpoints.length > 0).length;
+            
+            const studentExamSet = new Set(state.examResults.map(r => r.studentId));
+            const pendingS = state.students.filter(s => !studentExamSet.has(s.id)).length;
+            const failedS = Math.max(0, totalS - passedS - pendingS);
+
+            document.getElementById('teacherTotalStudents').textContent = totalS;
+            document.getElementById('teacherPassedCount').textContent = passedS;
+            document.getElementById('teacherFailedCount').textContent = failedS;
+            document.getElementById('teacherPendingCount').textContent = pendingS;
+
+            // Render Active Sessions Table
+            const sessionTbody = document.getElementById('teacherActiveSessionsTable');
+            sessionTbody.innerHTML = state.sessions.length === 0 
+                ? `<tr><td colspan="5" class="p-4 text-center text-sky-400">Belum ada sesi setoran resmi.</td></tr>`
+                : state.sessions.map(s => `
+                    <tr class="hover:bg-slate-950/40">
+                        <td class="p-3 font-mono font-bold text-dora-yellow text-sm">${s.token}</td>
+                        <td class="p-3 font-bold text-white">Perkalian ${s.targetTable}</td>
+                        <td class="p-3">${s.timerSeconds} Detik</td>
+                        <td class="p-3">${s.passingGrade} / 20 Soal</td>
+                        <td class="p-3 text-right">
+                            <button onclick="toggleSessionActive('${s.id}')" class="px-2.5 py-1 rounded-lg text-[10px] font-bold ${s.active ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/50' : 'bg-gray-700 text-gray-300'}">
+                                ${s.active ? 'AKTIF (Klik Nonaktifkan)' : 'NONAKTIF'}
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+
+            // Render Students List Table
+            const studentTbody = document.getElementById('teacherStudentListTable');
+            studentTbody.innerHTML = state.students.map(s => {
+                const unlocked = s.unlockedCheckpoints || [];
+                const totalExams = state.examResults.filter(r => r.studentId === s.id).length;
+                const cpBadges = unlocked.length === 0 
+                    ? `<span class="text-slate-500 italic">Belum ada (BELUM SETOR / LULUS)</span>`
+                    : unlocked.map(t => `<span class="bg-slate-800 border border-dora-blue/50 text-sky-200 px-2 py-0.5 rounded text-[10px] font-bold mr-1">×${t}</span>`).join('');
+
+                return `
+                    <tr class="hover:bg-slate-950/40">
+                        <td class="p-3 font-bold text-white">${s.name}</td>
+                        <td class="p-3">${cpBadges}</td>
+                        <td class="p-3">${totalExams} Kali Sesi</td>
+                        <td class="p-3 text-right space-x-2">
+                            <button onclick="openEditStudentModal('${s.id}')" class="text-dora-yellow hover:text-amber-300 font-bold p-1" title="Edit Nama Siswa">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+                            <button onclick="deleteStudent('${s.id}')" class="text-dora-red hover:text-rose-300 font-bold p-1" title="Hapus Siswa">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+
+            // Render Exam History Table
+            const historyTbody = document.getElementById('teacherExamHistoryTable');
+            historyTbody.innerHTML = state.examResults.length === 0
+                ? `<tr><td colspan="6" class="p-4 text-center text-sky-400">Belum ada riwayat pengerjaan setoran siswa.</td></tr>`
+                : state.examResults.slice(0, 15).map(r => `
+                    <tr class="hover:bg-slate-950/40">
+                        <td class="p-3 text-sky-400 text-[10px]">${r.timestamp}</td>
+                        <td class="p-3 font-bold text-white">${r.studentName}</td>
+                        <td class="p-3">Perkalian ${r.targetTable}</td>
+                        <td class="p-3">${r.correctCount} Benar / ${r.wrongCount} Salah</td>
+                        <td class="p-3 font-bold ${r.score >= 75 ? 'text-emerald-400' : 'text-dora-red'}">${r.score}</td>
+                        <td class="p-3">
+                            <span class="px-2 py-0.5 rounded text-[10px] font-bold ${r.isPassed ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40' : 'bg-dora-red/20 text-rose-300 border border-dora-red/40'}">
+                                ${r.isPassed ? 'LULUS' : 'GAGAL'}
+                            </span>
+                        </td>
+                    </tr>
+                `).join('');
+        }
+
+        /* Initial boot */
+        window.onload = function() {
+            renderHomeView();
+        };
+    </script>
+</body>
+</html>
